@@ -4,16 +4,23 @@ const $messageForm = document.querySelector('#message-form')
 const $messageFormInput = $messageForm.querySelector('input')
 const $messageFormButton = $messageForm.querySelector('button')
 const $sendLocationButton = document.querySelector('#send-location')
+const $messages = document.querySelector('#messages')
+
+const messageTemplate = document.querySelector('#message-template').innerHTML
 
 socket.on('message', (message) => {
     console.log(message)
-})
+    const html = Mustache.render(messageTemplate, {
+        message 
+    })
+    $messages.insertAdjacentHTML('beforeend', html)
+})  
 
 $messageForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
     $messageFormButton.setAttribute('disabled', 'disabled')
-})
+
     
 // disable
     const message = e.target.elements.message.value
@@ -29,6 +36,7 @@ $messageForm.addEventListener('submit', (e) => {
 
          console.log('Message delivered!')
     })
+})
 
     $sendLocationButton.addEventListener('click', () => {
     if (!navigator.geolocation) {
